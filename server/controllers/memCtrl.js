@@ -12,10 +12,10 @@ module.exports = {
       } else {
         let salt = bcrypt.genSaltSync(10);
         let hash = bcrypt.hashSync(password, salt);
-        let [newUser] = await db.member.register_member(email, hash, name);
-
-        delete newUser.hash;
-        res.status(200).send("account now registered");
+        let [member] = await db.member.register_member(email, hash, name);
+        delete member.hash;
+        let response = "Hooray! Your account is now registered."
+        res.status(200).send({member,response});
       }
       //send the updated profile back to the front end.
       res.status(200).send("db has been sucessfully reset");
@@ -39,7 +39,7 @@ module.exports = {
           res.status(403).send("Email");
         } else {
           delete user.hash;
-
+          user.isLoggedIn = true;
           req.session.user = user;
           res.status(200).send(req.session.user);
         }

@@ -1,11 +1,17 @@
+import React from 'react';
+// import {MemberProvider} from './context/MemberContext';
 import './reset.css';
 import './App.css';
+import routes from './routes/routes'
 
-function App() {
+const App=()=>{
+  
   return (
-    <div className="App">
-      
+   
+    <div className="App"> 
+{routes}
     </div>
+  
   );
 }
 

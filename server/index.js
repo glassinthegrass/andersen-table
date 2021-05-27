@@ -35,14 +35,23 @@ io.on('connection', (socket)=>{
         })
     })
 
-socket.on('new msg',(room,msg)=>{
+socket.on('register',async (room,info)=>{
     const db = app.get('db');
+    const {email,password,name}= info;
+    let hash = password
+    let newMember = await db.member.register_member(email,hash,name);
+info = newMember
+    io.in(room).emit('new member info',info);
+})
 
-    socket.to(room).emit('incoming msg',msg);
-    const {member_id}= msg;
-    
-    db.create_recipe(member_id);
-
+socket.on('login',async (room,info)=>{
+const db = app.get('db');
+  const {email,password}= info;
+  let [newMember] = await db.member.get_member_by_email(email);
+  console.log(newMember)
+  info = newMember
+info.isLoggedIn = true
+  io.in(room).emit('existing member info',info);
 })
 
 })

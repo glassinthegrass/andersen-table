@@ -1,5 +1,6 @@
 var bcrypt = require("bcryptjs");
 
+
 module.exports = {
   registerMember: async (req, res) => {
     //get the database instance
